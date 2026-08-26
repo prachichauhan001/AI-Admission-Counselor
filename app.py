@@ -1,0 +1,464 @@
+"""
+AI Admission Counselor MIET — Streamlit UI
+--------------------------------------------
+Run with:  streamlit run app.py
+
+Flow:
+  1. Landing / selection screen -> student picks their programme
+  2. Screen switches to a full chat interface, personalized to that programme
+"""
+
+import streamlit as st
+from backend import build_app, PROGRAMME_GROUPS
+
+MIET_LOGO_URL = "https://www.miet.ac.in/images/newimages/logo.png"
+
+st.set_page_config(
+    page_title="AI Admission Counselor | MIET",
+    page_icon="🎓",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
+
+# ---------------------------------------------------------------------------
+# Global styling — MIET brand colors (red #DD322B + white + charcoal)
+# ---------------------------------------------------------------------------
+
+st.markdown(
+    """
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
+        :root {
+            --miet-red: #DD322B;
+            --miet-red-dark: #A8241F;
+            --miet-charcoal: #222222;
+        }
+
+        html, body, [class*="css"] {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #MainMenu, footer, header {visibility: hidden;}
+
+        .stApp {
+            background: #FAFAFA;
+        }
+
+        .block-container {
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+            max-width: 1020px;
+        }
+
+        /* ---------- Hero (selection page) ---------- */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(120deg, var(--miet-red-dark) 0%, var(--miet-red) 55%, #EF4B44 100%);
+            border-radius: 24px;
+            padding: 2.8rem 2.2rem 2.4rem 2.2rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 2.2rem;
+            box-shadow: 0 16px 36px rgba(221, 50, 43, 0.28);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 220px;
+            height: 220px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: -80px;
+            left: -40px;
+            width: 180px;
+            height: 180px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+        }
+
+        .hero-logo {
+            width: 92px;
+            height: 92px;
+            border-radius: 20px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+            padding: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .hero .college-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            margin: 0 0 2px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .est {
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffd9d6;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin: 0.3rem 0 0.5rem 0;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .tagline {
+            font-size: 0.98rem;
+            color: #ffe3e1;
+            font-style: italic;
+            margin: 0 0 0.3rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .desc {
+            font-size: 0.9rem;
+            color: #ffd9d6;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .group-title {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--miet-charcoal);
+            margin: 1.4rem 0 0.6rem 0;
+            padding-left: 10px;
+            border-left: 4px solid var(--miet-red);
+        }
+
+        div[data-testid="stButton"] > button {
+            width: 100%;
+            border-radius: 12px;
+            border: 1.5px solid #ececec;
+            background: white;
+            color: var(--miet-charcoal);
+            font-weight: 600;
+            padding: 0.6rem 0.75rem;
+            transition: all 0.15s ease;
+            font-size: 0.9rem;
+        }
+
+        div[data-testid="stButton"] > button:hover {
+            border-color: var(--miet-red);
+            background: #fff2f1;
+            color: var(--miet-red-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(221,50,43,0.12);
+        }
+
+        /* ---------- Chat page header ---------- */
+        .chat-header {
+            background: linear-gradient(120deg, var(--miet-red-dark) 0%, var(--miet-red) 100%);
+            border-radius: 18px;
+            padding: 1rem 1.5rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.4rem;
+            box-shadow: 0 8px 20px rgba(221, 50, 43, 0.22);
+        }
+
+        .chat-header .left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .chat-header .logo-mini {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            flex-shrink: 0;
+        }
+
+        .chat-header .logo-mini img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .chat-header .title {
+            font-weight: 700;
+            font-size: 1.08rem;
+            line-height: 1.25;
+        }
+
+        .chat-header .subtitle {
+            font-size: 0.8rem;
+            color: #ffe3e1;
+        }
+
+        .pill {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* ---------- Chat bubbles ---------- */
+        div[data-testid="stChatMessage"] {
+            background: transparent;
+            padding: 0;
+        }
+
+        .msg-row {
+            display: flex;
+            margin-bottom: 14px;
+        }
+
+        .msg-row.user { justify-content: flex-end; }
+        .msg-row.bot { justify-content: flex-start; }
+
+        .bubble {
+            max-width: 78%;
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            font-size: 0.94rem;
+            line-height: 1.55;
+        }
+
+        .bubble.user {
+            background: var(--miet-red);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble.bot {
+            background: white;
+            color: var(--miet-charcoal);
+            border: 1px solid #eee;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.2rem 1rem 1rem 1rem;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #b8b8b8;
+            font-size: 0.78rem;
+            margin-top: 2rem;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ---------------------------------------------------------------------------
+# Session state
+# ---------------------------------------------------------------------------
+
+if "page" not in st.session_state:
+    st.session_state.page = "select"
+if "programme" not in st.session_state:
+    st.session_state.programme = None
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+
+@st.cache_resource(show_spinner=False)
+def load_graph():
+    return build_app()
+
+
+# ---------------------------------------------------------------------------
+# PAGE 1 — Programme selection
+# ---------------------------------------------------------------------------
+
+def render_selection_page():
+    st.markdown(
+        f"""
+        <div class="hero">
+            <div class="hero-logo">
+                <img src="{MIET_LOGO_URL}" alt="MIET Logo" />
+            </div>
+            <div class="college-name">Meerut Institute of Engineering &amp; Technology</div>
+            <div class="est">Shaping Futures Since 1997</div>
+            <h1>AI Admission Counselor</h1>
+            <p class="tagline">Innovate. Learn. Lead the Future.</p>
+            <p class="desc">Your instant guide to admissions, fees, scholarships, hostel &amp; more.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("#### Select your programme to get started")
+
+    for group, options in PROGRAMME_GROUPS.items():
+        st.markdown(f'<div class="group-title">{group}</div>', unsafe_allow_html=True)
+        cols = st.columns(3)
+        for i, option in enumerate(options):
+            with cols[i % 3]:
+                if st.button(option, key=f"prog_{option}"):
+                    st.session_state.programme = option
+                    st.session_state.page = "chat"
+                    st.session_state.chat_history = []
+                    st.rerun()
+
+    st.markdown(
+        '<div class="footer-note">© MIET Group of Institutions — N.H. 58, Delhi-Roorkee Highway, Meerut</div>',
+        unsafe_allow_html=True,
+    )
+
+
+# ---------------------------------------------------------------------------
+# PAGE 2 — Chat screen
+# ---------------------------------------------------------------------------
+
+SUGGESTIONS = [
+    "What documents do I need for admission?",
+    "Tell me about hostel facilities",
+    "What scholarships are available?",
+    "How does the transport service work?",
+]
+
+
+def render_chat_page():
+    programme = st.session_state.programme
+
+    st.markdown(
+        f"""
+        <div class="chat-header">
+            <div class="left">
+                <div class="logo-mini">
+                    <img src="{MIET_LOGO_URL}" alt="MIET Logo" />
+                </div>
+                <div>
+                    <div class="title">AI Admission Counselor</div>
+                    <div class="subtitle">{programme}</div>
+                </div>
+            </div>
+            <div class="pill">● Online</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    with st.sidebar:
+        st.image(MIET_LOGO_URL, width=140)
+        st.markdown("### Your Session")
+        st.write(f"**Programme:** {programme}")
+        if st.button("🔄 Change Programme"):
+            st.session_state.page = "select"
+            st.session_state.programme = None
+            st.session_state.chat_history = []
+            st.rerun()
+        st.markdown("---")
+        st.caption("Ask about scholarships, admission, transport, required documents, fees, or hostel life.")
+
+    with st.spinner("Setting things up..."):
+        app = load_graph()
+
+    # Empty state / suggestion chips
+    clicked_suggestion = None
+    if not st.session_state.chat_history:
+        st.markdown(
+            """
+            <div class="empty-state">
+                <div class="icon">💬</div>
+                <div>Ask me anything about MIET admissions, fees, or hostel life.</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        chip_cols = st.columns(len(SUGGESTIONS))
+        for i, s in enumerate(SUGGESTIONS):
+            with chip_cols[i]:
+                if st.button(s, key=f"chip_{i}"):
+                    clicked_suggestion = s
+
+    # Render chat history as custom bubbles
+    for role, content in st.session_state.chat_history:
+        css_class = "user" if role == "human" else "bot"
+        st.markdown(
+            f"""
+            <div class="msg-row {css_class}">
+                <div class="bubble {css_class}">{content}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Chat input
+    user_query = st.chat_input("Type your question here...")
+    final_query = user_query or clicked_suggestion
+
+    if final_query:
+        st.session_state.chat_history.append(("human", final_query))
+
+        try:
+            with st.spinner("Thinking..."):
+                result = app.invoke({
+                    "programme": programme,
+                    "messages": [("human", final_query)],
+                })
+                answer = result["messages"][-1].content
+        except RuntimeError as e:
+            answer = f"⚠️ {e}"
+
+        st.session_state.chat_history.append(("ai", answer))
+        st.rerun()
+
+
+# ---------------------------------------------------------------------------
+# Router
+# ---------------------------------------------------------------------------
+
+if st.session_state.page == "select":
+    render_selection_page()
+else:
+    render_chat_page()
