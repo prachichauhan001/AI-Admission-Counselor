@@ -9,12 +9,12 @@ Flow:
 """
 
 import streamlit as st
-from backend import build_app, PROGRAMME_GROUPS
+from backend import build_app, PROGRAMME_GROUPS, COLLEGE_INFO
 
-MIET_LOGO_URL = "https://www.miet.ac.in/images/newimages/logo.png"
+MIET_LOGO_URL = COLLEGE_INFO["logo_url"]
 
 st.set_page_config(
-    page_title="AI Admission Counselor | MIET",
+    page_title=f"AI Admission Counselor | {COLLEGE_INFO['short_name']}",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -117,6 +117,14 @@ st.markdown(
             z-index: 1;
         }
 
+        .hero .address {
+            font-size: 0.78rem;
+            color: #ffe3e1;
+            margin: 0 0 6px 0;
+            position: relative;
+            z-index: 1;
+        }
+
         .hero .est {
             font-size: 0.72rem;
             letter-spacing: 2px;
@@ -182,6 +190,35 @@ st.markdown(
             box-shadow: 0 4px 10px rgba(221,50,43,0.12);
         }
 
+        /* Back button gets its own compact style so it doesn't look like a
+           full-width programme button */
+        div[data-testid="stButton"].back-btn > button {
+            width: auto;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* ---------- Mobile: keep programme buttons side-by-side in equal
+           boxes instead of Streamlit's default single-column stacking ---------- */
+        @media (max-width: 640px) {
+            div[data-testid="stHorizontalBlock"] {
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
+                flex: 1 1 47% !important;
+                width: 47% !important;
+                min-width: 47% !important;
+            }
+            div[data-testid="stButton"] > button {
+                font-size: 0.76rem;
+                padding: 0.55rem 0.5rem;
+                white-space: normal;
+                min-height: 3rem;
+                line-height: 1.25;
+            }
+        }
+
         /* ---------- Chat page header ---------- */
         .chat-header {
             background: linear-gradient(120deg, var(--miet-red-dark) 0%, var(--miet-red) 100%);
@@ -228,6 +265,12 @@ st.markdown(
         .chat-header .subtitle {
             font-size: 0.8rem;
             color: #ffe3e1;
+        }
+
+        .chat-header .address {
+            font-size: 0.72rem;
+            color: #ffd9d6;
+            margin-top: 1px;
         }
 
         .pill {
@@ -315,6 +358,12 @@ def load_graph():
     return build_app()
 
 
+def _go_back_to_selection():
+    st.session_state.page = "select"
+    st.session_state.programme = None
+    st.session_state.chat_history = []
+
+
 # ---------------------------------------------------------------------------
 # PAGE 1 — Programme selection
 # ---------------------------------------------------------------------------
@@ -324,12 +373,13 @@ def render_selection_page():
         f"""
         <div class="hero">
             <div class="hero-logo">
-                <img src="{MIET_LOGO_URL}" alt="MIET Logo" />
+                <img src="{MIET_LOGO_URL}" alt="{COLLEGE_INFO['short_name']} Logo" />
             </div>
-            <div class="college-name">Meerut Institute of Engineering &amp; Technology</div>
-            <div class="est">Shaping Futures Since 1997</div>
+            <div class="college-name">{COLLEGE_INFO['name']}</div>
+            <div class="address">{COLLEGE_INFO['address']}</div>
+            <div class="est">Shaping Futures Since {COLLEGE_INFO['established']}</div>
             <h1>AI Admission Counselor</h1>
-            <p class="tagline">Innovate. Learn. Lead the Future.</p>
+            <p class="tagline">{COLLEGE_INFO['tagline']}</p>
             <p class="desc">Your instant guide to admissions, fees, scholarships, hostel &amp; more.</p>
         </div>
         """,
@@ -350,7 +400,7 @@ def render_selection_page():
                     st.rerun()
 
     st.markdown(
-        '<div class="footer-note">© MIET Group of Institutions — N.H. 58, Delhi-Roorkee Highway, Meerut</div>',
+        f'<div class="footer-note">© {COLLEGE_INFO["short_name"]} Group of Institutions — {COLLEGE_INFO["address"]}</div>',
         unsafe_allow_html=True,
     )
 
@@ -370,16 +420,27 @@ SUGGESTIONS = [
 def render_chat_page():
     programme = st.session_state.programme
 
+    # Visible back button, right above the header, on the main page itself —
+    # NOT tucked inside the sidebar, which starts collapsed and was easy to miss.
+    back_col, _spacer = st.columns([1, 5])
+    with back_col:
+        st.markdown('<div class="back-btn">', unsafe_allow_html=True)
+        if st.button("⬅ Back to programmes", key="back_top"):
+            _go_back_to_selection()
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
     st.markdown(
         f"""
         <div class="chat-header">
             <div class="left">
                 <div class="logo-mini">
-                    <img src="{MIET_LOGO_URL}" alt="MIET Logo" />
+                    <img src="{MIET_LOGO_URL}" alt="{COLLEGE_INFO['short_name']} Logo" />
                 </div>
                 <div>
-                    <div class="title">AI Admission Counselor</div>
+                    <div class="title">AI Admission Counselor — {COLLEGE_INFO['name']}</div>
                     <div class="subtitle">{programme}</div>
+                    <div class="address">{COLLEGE_INFO['address']}</div>
                 </div>
             </div>
             <div class="pill">● Online</div>
@@ -393,9 +454,7 @@ def render_chat_page():
         st.markdown("### Your Session")
         st.write(f"**Programme:** {programme}")
         if st.button("🔄 Change Programme"):
-            st.session_state.page = "select"
-            st.session_state.programme = None
-            st.session_state.chat_history = []
+            _go_back_to_selection()
             st.rerun()
         st.markdown("---")
         st.caption("Ask about scholarships, admission, transport, required documents, fees, or hostel life.")

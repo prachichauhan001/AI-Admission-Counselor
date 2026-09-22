@@ -4,6 +4,7 @@ AI Admission Counselor for MIET — Backend
 Agentic RAG chatbot backend built with LangGraph + Groq LLM.
 
 Exposes what app.py (the Streamlit UI) needs:
+  - COLLEGE_INFO     : single source of truth for name / address / tagline
   - PROGRAMME_GROUPS : dict of programme categories -> list of programme names
                         (used to render the selection screen buttons)
   - build_app()       : builds (once, then reuses) the compiled LangGraph app
@@ -30,6 +31,30 @@ if not _GROQ_API_KEY:
         "backend.py with a line like: GROQ_API_KEY=gsk_your_key_here "
         "(get a free key at https://console.groq.com/keys)."
     )
+
+# ---------------------------------------------------------------------------
+# Single source of truth for the college's identity. app.py imports this too,
+# so the name/address shown on screen and the name/address the LLM uses in
+# its answers can never drift apart or get hallucinated.
+# ---------------------------------------------------------------------------
+
+COLLEGE_INFO = {
+    "name": "Meerut Institute of Engineering & Technology",
+    "short_name": "MIET",
+    "tagline": "Innovate. Learn. Lead the Future.",
+    "established": "1997",
+    "address": "N.H. 58, Delhi-Roorkee Highway, Baghpat Bypass Road, Meerut, Uttar Pradesh, India",
+    "affiliation": "Dr. A.P.J. Abdul Kalam Technical University (AKTU), Lucknow",
+    "logo_url": "https://www.miet.ac.in/images/newimages/logo.png",
+}
+
+_IDENTITY_BLOCK = (
+    f"You are the official AI Admission Counselor for {COLLEGE_INFO['name']} "
+    f"({COLLEGE_INFO['short_name']}), established {COLLEGE_INFO['established']}, "
+    f"located at {COLLEGE_INFO['address']}, affiliated to {COLLEGE_INFO['affiliation']}. "
+    f"Always use this exact college name, campus and location whenever asked — "
+    f"never invent, guess, or use a different college name or city.\n\n"
+)
 
 # ---------------------------------------------------------------------------
 # Programme groups (used by the Streamlit selection screen)
@@ -160,11 +185,16 @@ def _get_llm():
     if _llm is None:
         # llama-3.3-70b-versatile has been retired by Groq (deprecated June 2026).
         # openai/gpt-oss-120b is Groq's recommended replacement for equivalent quality.
-        # timeout/max_retries added so a flaky/blocked connection retries automatically
-        # instead of failing on the very first hiccup.
+        #
+        # temperature dropped from 0.4 -> 0.1 and a fixed seed added: at 0.4 the
+        # same question ("what's the MBA fee", "tell me about placements") could
+        # come back worded/numbered differently on every ask. Low temperature +
+        # a fixed seed makes answers to the same question consistent instead of
+        # re-generated from scratch each time.
         _llm = ChatGroq(
             model="openai/gpt-oss-120b",
-            temperature=0.4,
+            temperature=0.1,
+            model_kwargs={"seed": 42},
             timeout=30,
             max_retries=3,
         )
@@ -226,7 +256,8 @@ def _classifier_node(state: State) -> dict:
         "duration, or university affiliation.\n"
         "Use 'syllabus' for questions about first-year subjects, curriculum, or B.Tech "
         "1st year academic structure.\n"
-        "Use 'general' for greetings, casual talk, or anything not related to the above topics.\n\n"
+        "Use 'general' for greetings, casual talk, placements, rankings, campus location, "
+        "or anything not related to the above topics.\n\n"
         f"Query: {last_message}\n\n"
         "Return only one word: scholarship, admission, transport, fee, hostel, rules, "
         "courses, syllabus, or general."
@@ -260,8 +291,17 @@ def _make_rag_node(retriever_key: str):
         retriever = retrievers.get(retriever_key)
         if retriever is None:
             return {"retrieved_context": "NO_RETRIEVAL_NEEDED"}
+
         query = state["messages"][-1].content
-        return {"retrieved_context": _retrieve_context(retriever, query)}
+        programme = state.get("programme", "")
+
+        # Bias the similarity search towards the student's own programme so
+        # a "fee" or "scholarship" PDF that lists many programmes in one
+        # table doesn't pull in chunks about *other* programmes (e.g. asking
+        # about MBA fee no longer drags in the B.Pharm fee table).
+        search_query = f"{programme} {query}".strip() if programme else query
+
+        return {"retrieved_context": _retrieve_context(retriever, search_query)}
 
     return _node
 
@@ -280,18 +320,30 @@ def _response_node(state: State) -> dict:
 
     if context == "NO_RETRIEVAL_NEEDED":
         prompt = (
-            f"You are a friendly college assistant talking to a {programme} student. "
-            f"Answer this question using your own general knowledge:\n\n{query}"
+            _IDENTITY_BLOCK
+            + f"You are talking to a {programme} student. Answer the question below "
+              f"in 3-5 short sentences, friendly and precise.\n\n"
+              f"If the question asks for a specific number or statistic you don't have "
+              f"confirmed data for (e.g. exact placement percentage, package figures, "
+              f"rankings, exact dates), do NOT invent a number — say this isn't "
+              f"confirmed and suggest checking the official MIET website or contacting "
+              f"the admissions/placement office for the latest figures.\n\n"
+              f"Question: {query}"
         )
     else:
         prompt = (
-            f"You are a college assistant helping a {programme} student. "
-            f"Use the following context from the official college documents to answer "
-            f"the question accurately. If the context mentions specific figures for "
-            f"different programmes, highlight the one relevant to {programme} if possible.\n\n"
-            f"Context:\n{context}\n\n"
-            f"Question: {query}\n\n"
-            f"Give a clear, friendly, and precise answer."
+            _IDENTITY_BLOCK
+            + f"You are helping a {programme} student. Use ONLY the context below, "
+              f"taken from official college documents.\n\n"
+              f"IMPORTANT: this context may contain information about OTHER programmes "
+              f"too. Ignore anything not relevant to {programme} and answer ONLY for "
+              f"{programme}, unless the student explicitly asks you to compare "
+              f"programmes. If the exact figure/detail for {programme} isn't present "
+              f"in the context, say so honestly instead of guessing or borrowing "
+              f"another programme's figure.\n\n"
+              f"Context:\n{context}\n\n"
+              f"Question: {query}\n\n"
+              f"Answer in 3-6 short, clear sentences. Be concise and accurate, no filler."
         )
 
     response = _invoke_llm_safely(prompt)
@@ -366,7 +418,7 @@ if __name__ == "__main__":
     cli_app = build_app()
 
     print("=========================================")
-    print("   AI Admission Counselor for MIET")
+    print(f"   AI Admission Counselor for {COLLEGE_INFO['short_name']}")
     print("=========================================\n")
     print("Which programme are you in?\n")
 
