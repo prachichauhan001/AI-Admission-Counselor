@@ -11,6 +11,8 @@ Flow:
 import streamlit as st
 import streamlit.components.v1 as components
 import os
+import re
+import html as html_lib
 from backend import build_app, PROGRAMME_GROUPS, COLLEGE_INFO
 
 MIET_LOGO_URL = COLLEGE_INFO["logo_url"]
@@ -361,6 +363,21 @@ def load_graph():
     return build_app()
 
 
+def render_message_text(text: str) -> str:
+    """Safely prepares chat text for the custom HTML bubble.
+
+    The bubble is inserted as raw HTML, so plain markdown (**bold**) doesn't
+    render on its own — this escapes any stray HTML first (so the layout
+    never breaks), then converts basic markdown (**bold**, *italics*) into
+    real HTML and turns newlines into line breaks.
+    """
+    escaped = html_lib.escape(text)
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+    escaped = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", escaped)
+    escaped = escaped.replace("\n", "<br>")
+    return escaped
+
+
 def _go_back_to_selection():
     st.session_state.page = "select"
     st.session_state.programme = None
@@ -496,10 +513,11 @@ def render_chat_page():
     # Render chat history as custom bubbles
     for role, content in st.session_state.chat_history:
         css_class = "user" if role == "human" else "bot"
+        safe_content = render_message_text(content)
         st.markdown(
             f"""
             <div class="msg-row {css_class}">
-                <div class="bubble {css_class}">{content}</div>
+                <div class="bubble {css_class}">{safe_content}</div>
             </div>
             """,
             unsafe_allow_html=True,

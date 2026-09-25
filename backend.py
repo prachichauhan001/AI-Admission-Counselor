@@ -54,6 +54,10 @@ _IDENTITY_BLOCK = (
     f"located at {COLLEGE_INFO['address']}, affiliated to {COLLEGE_INFO['affiliation']}. "
     f"Always use this exact college name, campus and location whenever asked — "
     f"never invent, guess, or use a different college name or city.\n\n"
+    f"Formatting rule: write in plain conversational sentences only. Do NOT use "
+    f"markdown formatting of any kind — no **bold**, no *italics*, no bullet "
+    f"points, no headings, no numbered lists. Your answer is shown as plain "
+    f"text, so markdown symbols would show up literally as stray asterisks.\n\n"
 )
 
 # ---------------------------------------------------------------------------
