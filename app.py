@@ -354,6 +354,8 @@ if "page" not in st.session_state:
     st.session_state.page = "select"
 if "programme" not in st.session_state:
     st.session_state.programme = None
+if "show_scholarship_tool" not in st.session_state:
+    st.session_state.show_scholarship_tool = False
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
@@ -376,6 +378,16 @@ def render_message_text(text: str) -> str:
     escaped = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", escaped)
     escaped = escaped.replace("\n", "<br>")
     return escaped
+
+
+def render_scholarship_tool_embed():
+    """Renders the embedded UP State Scholarship Eligibility Checking Tool."""
+    if os.path.exists(SCHOLARSHIP_TOOL_PATH):
+        with open(SCHOLARSHIP_TOOL_PATH, "r", encoding="utf-8") as f:
+            scholarship_tool_html = f.read()
+        components.html(scholarship_tool_html, height=850, scrolling=True)
+    else:
+        st.warning("Scholarship tool file not found. Make sure 'scholarship_tool.html' is in the same folder as app.py.")
 
 
 def _go_back_to_selection():
@@ -482,12 +494,7 @@ def render_chat_page():
         st.markdown("---")
         with st.expander("🎓 Check Scholarship Eligibility"):
             st.caption("UP State Scholarship Eligibility Checking Tool (2026-27)")
-            if os.path.exists(SCHOLARSHIP_TOOL_PATH):
-                with open(SCHOLARSHIP_TOOL_PATH, "r", encoding="utf-8") as f:
-                    scholarship_tool_html = f.read()
-                components.html(scholarship_tool_html, height=850, scrolling=True)
-            else:
-                st.warning("Scholarship tool file not found. Make sure 'scholarship_tool.html' is in the same folder as app.py.")
+            render_scholarship_tool_embed()
 
     with st.spinner("Setting things up..."):
         app = load_graph()
@@ -511,7 +518,7 @@ def render_chat_page():
                     clicked_suggestion = s
 
     # Render chat history as custom bubbles
-    for role, content in st.session_state.chat_history:
+    for i, (role, content) in enumerate(st.session_state.chat_history):
         css_class = "user" if role == "human" else "bot"
         safe_content = render_message_text(content)
         st.markdown(
@@ -522,6 +529,26 @@ def render_chat_page():
             """,
             unsafe_allow_html=True,
         )
+        # If this bot message points the student to the scholarship tool,
+        # show a real, clickable button right under it that jumps straight
+        # to the tool's UI instead of leaving it as plain, unclickable text.
+        if role == "ai" and "scholarship eligibility" in content.lower():
+            if st.button("🎓 Open Scholarship Eligibility Checker", key=f"open_schol_tool_{i}"):
+                st.session_state.show_scholarship_tool = True
+                st.rerun()
+
+    if st.session_state.show_scholarship_tool:
+        st.markdown("---")
+        tool_header_col, tool_close_col = st.columns([5, 1])
+        with tool_header_col:
+            st.markdown("#### 🎓 Scholarship Eligibility Checker")
+            st.caption("UP State Scholarship Eligibility Checking Tool (2026-27)")
+        with tool_close_col:
+            if st.button("✖ Close", key="close_schol_tool"):
+                st.session_state.show_scholarship_tool = False
+                st.rerun()
+        render_scholarship_tool_embed()
+        st.markdown("---")
 
     # Chat input
     user_query = st.chat_input("Type your question here...")
