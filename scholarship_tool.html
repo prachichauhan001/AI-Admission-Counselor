@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UP State Scholarship Eligibility Checking Tool 2026-27</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0f2c59',
+                            900: '#0a1d3c',
+                            950: '#061329'
+                        },
+                        gold: {
+                            400: '#f59e0b',
+                            500: '#d97706',
+                            600: '#b45309'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .govt-gradient {
+            background: linear-gradient(135deg, #0a1d3c 0%, #0f2c59 50%, #1e3a8a 100%);
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(15, 44, 89, 0.08), 0 8px 10px -6px rgba(15, 44, 89, 0.04);
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            .print-card {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+        }
+
+        .print-only {
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <header class="govt-gradient text-white border-b-4 border-amber-500 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center p-2 border border-amber-400/30 flex-shrink-0">
+                        <svg viewBox="0 0 100 100" class="w-full h-full fill-current text-amber-400">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="4"/>
+                            <path d="M50 15 L50 85 M15 50 L85 50" stroke="currentColor" stroke-width="2"/>
+                            <polygon points="50,20 55,35 70,35 58,45 62,60 50,50 38,60 42,45 30,35 45,35" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-amber-500 text-slate-950 font-bold text-xs px-2 py-0.5 rounded uppercase tracking-wider">Session 2026-27</span>
+                            <span class="text-xs text-slate-300 font-medium hidden sm:inline" data-i18n="deptSub">Department of Social Welfare, OBC & Minority Welfare, UP</span>
+                        </div>
+                        <h1 class="text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2" data-i18n="portalTitle">
+                            UP State Scholarship Eligibility Checking Tool
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 no-print">
+                    <div class="bg-slate-900/60 p-1 rounded-lg border border-slate-700 flex items-center">
+                        <button id="langEnBtn" class="px-3 py-1 text-xs font-semibold rounded-md transition-all bg-amber-500 text-slate-950 shadow">
+                            English
+                        </button>
+                        <button id="langHiBtn" class="px-3 py-1 text-xs font-semibold rounded-md transition-all text-slate-300 hover:text-white">
+                            हिन्दी
+                        </button>
+                    </div>
+
+                    <a href="#rulesMatrix" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-xs font-medium rounded-lg text-amber-300 border border-amber-400/30 transition">
+                        <i class="fa-solid fa-table-list"></i>
+                        <span data-i18n="viewMatrixBtn">Rules Matrix</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        
+        <div class="mb-8 bg-blue-50 border-l-4 border-navy-800 p-4 rounded-r-xl shadow-sm flex items-start gap-3 no-print">
+            <i class="fa-solid fa-circle-info text-navy-800 text-xl mt-0.5"></i>
+            <div>
+                <h2 class="text-sm font-bold text-navy-900 uppercase tracking-wide" data-i18n="noticeHeader">Academic Session 2026-27 Guidelines Verification</h2>
+                <p class="text-xs sm:text-sm text-slate-700 mt-1 leading-relaxed" data-i18n="noticeText">
+                    Verify scholarship eligibility dynamically based on social category (General, SC/ST, OBC, Minority), course level, admission channel, and income caps.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden no-print">
+                <div class="bg-slate-100 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-user-check text-navy-800"></i>
+                        <h2 class="font-bold text-slate-800 text-base" data-i18n="formHeading">Enter Candidate Details</h2>
+                    </div>
+                    <button id="resetBtn" class="text-xs font-medium text-slate-500 hover:text-red-600 flex items-center gap-1 transition">
+                        <i class="fa-solid fa-rotate-left"></i> <span data-i18n="resetForm">Reset Form</span>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6">
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <label class="block text-xs font-semibold text-slate-600 mb-2" data-i18n="demoPresetsLabel">
+                            <i class="fa-solid fa-bolt text-amber-500 mr-1"></i> Quick Test Profiles:
+                        </label>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" class="preset-btn px-2.5 py-1 text-xs font-medium bg-white hover:bg-slate-200 border border-slate-300 rounded-md text-slate-700 transition" data-preset="obcBtechCounseling">
+                                OBC B.Tech (Counseling)
+                            </button>
+                            <button type="button" class="preset-btn px-2.5 py-1 text-xs font-medium bg-white hover:bg-slate-200 border border-slate-300 rounded-md text-slate-700 transition" data-preset="obcBtechDirect">
+                                OBC B.Tech (Direct 65%)
+                            </button>
+                            <button type="button" class="preset-btn px-2.5 py-1 text-xs font-medium bg-white hover:bg-slate-200 border border-slate-300 rounded-md text-slate-700 transition" data-preset="genBtechPass">
+                                Gen B.Tech (62% Merit)
+                            </button>
+                            <button type="button" class="preset-btn px-2.5 py-1 text-xs font-medium bg-white hover:bg-slate-200 border border-slate-300 rounded-md text-slate-700 transition" data-preset="scMtechPass">
+                                SC M.Tech (52% Counseling)
+                            </button>
+                            <button type="button" class="preset-btn px-2.5 py-1 text-xs font-medium bg-white hover:bg-slate-200 border border-slate-300 rounded-md text-slate-700 transition" data-preset="minorityFailDirect">
+                                Minority B.Tech (Direct Fail)
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="eligibilityForm" onsubmit="return false;" class="space-y-5">
+                        
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="domicileLabel">
+                                1. Domicile / Residence Status <span class="text-red-500">*</span>
+                            </label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition [&:has(:checked)]:border-navy-800 [&:has(:checked)]:bg-blue-50/50">
+                                    <input type="radio" name="domicile" value="UP" checked class="w-4 h-4 text-navy-800 focus:ring-navy-800">
+                                    <span class="ml-2 text-sm font-medium text-slate-800" data-i18n="upResident">Uttar Pradesh Resident</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition [&:has(:checked)]:border-navy-800 [&:has(:checked)]:bg-blue-50/50">
+                                    <input type="radio" name="domicile" value="NON_UP" class="w-4 h-4 text-navy-800 focus:ring-navy-800">
+                                    <span class="ml-2 text-sm font-medium text-slate-800" data-i18n="nonUpResident">Non-UP / Other State</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="category" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="categoryLabel">
+                                    2. Social Category <span class="text-red-500">*</span>
+                                </label>
+                                <select id="category" class="w-full rounded-xl border-slate-300 border p-2.5 text-sm focus:border-navy-800 focus:ring-navy-800 bg-white">
+                                    <option value="GEN" data-i18n="catGen">General (सामान्य)</option>
+                                    <option value="SC_ST" data-i18n="catScSt">SC / ST (अनुसूचित जाति / जनजाति)</option>
+                                    <option value="OBC" data-i18n="catObc" selected>OBC (अन्य पिछड़ा वर्ग)</option>
+                                    <option value="MINORITY" data-i18n="catMinority">Minority (अल्पसंख्यक)</option>
+                                </select>
+                            </div>
+
+                            <div id="minorityCommunityWrapper" class="hidden">
+                                <label for="minorityCommunity" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="minorityCommunityLabel">
+                                    Minority Community <span class="text-red-500">*</span>
+                                </label>
+                                <select id="minorityCommunity" class="w-full rounded-xl border-slate-300 border p-2.5 text-sm focus:border-navy-800 focus:ring-navy-800 bg-white">
+                                    <option value="Muslim" data-i18n="minMuslim">Muslim (मुस्लिम)</option>
+                                    <option value="Sikh" data-i18n="minSikh">Sikh (सिख)</option>
+                                    <option value="Christian" data-i18n="minChristian">Christian (ईसाई)</option>
+                                    <option value="Buddhist" data-i18n="minBuddhist">Buddhist (बौद्ध)</option>
+                                    <option value="Jain" data-i18n="minJain">Jain (जैन)</option>
+                                    <option value="Parsi" data-i18n="minParsi">Parsi (पारसी)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="course" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="courseLabel">
+                                3. Course Enrolled <span class="text-red-500">*</span>
+                            </label>
+                            <select id="course" class="w-full rounded-xl border-slate-300 border p-2.5 text-sm focus:border-navy-800 focus:ring-navy-800 bg-white">
+                                <option value="BTECH">B.Tech (बी-टेक)</option>
+                                <option value="BPHARMA">B.Pharma (बी-फार्मा)</option>
+                                <option value="MTECH">M.Tech (एम-टेक)</option>
+                                <option value="MPHARMA">M.Pharma (एम-फार्मा)</option>
+                                <option value="MBAMCA">MBA / MCA (एमबीए / एमसीए)</option>
+                                <option value="BSC">B.Sc. (बी-एससी)</option>
+                                <option value="MSC">M.Sc. (एम-एससी)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="admissionMode" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="admissionModeLabel">
+                                4. Mode of Admission <span class="text-red-500">*</span>
+                            </label>
+                            <!-- Dynamic Admission Mode Select populated via JS -->
+                            <select id="admissionMode" class="w-full rounded-xl border-slate-300 border p-2.5 text-sm focus:border-navy-800 focus:ring-navy-800 bg-white">
+                            </select>
+                            <p id="obcNoticeNote" class="text-[11px] text-amber-700 font-medium mt-1 hidden">
+                                <i class="fa-solid fa-circle-info"></i> Direct Counseling option is hidden for OBC category as per official departmental guidelines.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            <div>
+                                <label for="marks" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                    <span id="marksLabelText" data-i18n="marksLabelUndergrad">5. Qualifying Marks (12th / Diploma %)</span> <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <input type="number" id="marks" step="0.01" min="0" max="100" value="62" class="w-full rounded-xl border-slate-300 border p-2.5 pr-8 text-sm focus:border-navy-800 focus:ring-navy-800">
+                                    <span class="absolute right-3 top-2.5 text-slate-400 text-sm font-semibold">%</span>
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-1" id="marksHelperText" data-i18n="marksHelperUg">Enter total percentage in 12th Standard or Diploma.</p>
+                            </div>
+
+                            <div>
+                                <label for="income" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="incomeLabel">
+                                    6. Annual Family Income (in ₹) <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-slate-400 text-sm font-semibold">₹</span>
+                                    <input type="number" id="income" step="1000" min="0" value="180000" class="w-full rounded-xl border-slate-300 border p-2.5 pl-8 text-sm focus:border-navy-800 focus:ring-navy-800">
+                                </div>
+                                <p class="text-[11px] text-emerald-700 font-semibold mt-1" id="incomeLakhDisplay">Equivalent to: ₹ 1.80 Lakhs</p>
+                            </div>
+
+                        </div>
+
+                        <button type="button" id="checkEligibilityBtn" class="w-full bg-navy-800 hover:bg-navy-900 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2 group">
+                            <i class="fa-solid fa-magnifying-glass group-hover:scale-110 transition-transform"></i>
+                            <span data-i18n="checkBtn">Verify Scholarship Eligibility</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden print-card">
+                
+                <div class="bg-navy-900 text-white px-6 py-4 flex items-center justify-between border-b border-navy-800">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-award text-amber-400 text-lg"></i>
+                        <h2 class="font-bold text-base tracking-wide" data-i18n="resultCardHeading">Eligibility Report Card</h2>
+                    </div>
+                    <span class="text-[11px] bg-white/10 px-2 py-1 rounded text-slate-300">AY 2026-27</span>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    
+                    <div id="statusCard" class="p-5 rounded-2xl border transition-all text-center relative overflow-hidden bg-emerald-50 border-emerald-200">
+                        <div id="statusIconWrapper" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-2xl mb-2 bg-emerald-100 text-emerald-700">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div id="statusBadgeText" class="text-xl font-extrabold text-emerald-800 tracking-wide uppercase" data-i18n="statusEligible">
+                            Eligible for Scholarship
+                        </div>
+                        <p id="statusSubtext" class="text-xs text-emerald-700 mt-1 font-medium" data-i18n="statusEligibleSub">
+                            You meet all criteria under UP Social Welfare guidelines.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="breakdownTitle">Parameter Eligibility Breakdown</h3>
+
+                        <div class="space-y-2.5 text-xs">
+                            
+                            <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100" id="chkDomicileRow">
+                                <div class="flex items-center gap-2.5">
+                                    <span id="chkDomicileIcon" class="text-emerald-600 text-sm"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span class="font-medium text-slate-700" data-i18n="chkDomicile">Domicile (UP Permanent)</span>
+                                </div>
+                                <span id="chkDomicileBadge" class="font-bold px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800">PASSED</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100" id="chkIncomeRow">
+                                <div class="flex items-center gap-2.5">
+                                    <span id="chkIncomeIcon" class="text-emerald-600 text-sm"><i class="fa-solid fa-circle-check"></i></span>
+                                    <div>
+                                        <div class="font-medium text-slate-700" data-i18n="chkIncome">Family Annual Income</div>
+                                        <div class="text-[10px] text-slate-500" id="chkIncomeDetails">Max: ₹2.0 Lakhs | User: ₹1.80 Lakhs</div>
+                                    </div>
+                                </div>
+                                <span id="chkIncomeBadge" class="font-bold px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800">PASSED</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100" id="chkAdmissionRow">
+                                <div class="flex items-center gap-2.5">
+                                    <span id="chkAdmissionIcon" class="text-emerald-600 text-sm"><i class="fa-solid fa-circle-check"></i></span>
+                                    <div>
+                                        <div class="font-medium text-slate-700" data-i18n="chkAdmission">Admission Mode Compliance</div>
+                                        <div class="text-[10px] text-slate-500" id="chkAdmissionDetails">Counseling / Valid Mode</div>
+                                    </div>
+                                </div>
+                                <span id="chkAdmissionBadge" class="font-bold px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800">PASSED</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100" id="chkMarksRow">
+                                <div class="flex items-center gap-2.5">
+                                    <span id="chkMarksIcon" class="text-emerald-600 text-sm"><i class="fa-solid fa-circle-check"></i></span>
+                                    <div>
+                                        <div class="font-medium text-slate-700" data-i18n="chkMarks">Academic Qualification Marks</div>
+                                        <div class="text-[10px] text-slate-500" id="chkMarksDetails">Required: Min 60% | User: 62%</div>
+                                    </div>
+                                </div>
+                                <span id="chkMarksBadge" class="font-bold px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800">PASSED</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="reasonAlertBox" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs hidden">
+                        <div class="font-bold text-amber-900 flex items-center gap-1.5 mb-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span data-i18n="reasonBoxTitle">Reason for Ineligibility:</span>
+                        </div>
+                        <ul id="reasonList" class="list-disc list-inside text-amber-800 space-y-1">
+                        </ul>
+                    </div>
+
+                    <div class="pt-2 flex flex-col gap-2 no-print">
+                        <button type="button" id="printReportBtn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow">
+                            <i class="fa-solid fa-print"></i>
+                            <span data-i18n="printBtn">Print / Save Result Card (PDF)</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <section id="rulesMatrix" class="mt-12 bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden no-print">
+            
+            <div class="bg-navy-900 text-white px-6 py-5 border-b border-navy-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-bold text-lg flex items-center gap-2" data-i18n="matrixTitle">
+                        <i class="fa-solid fa-table text-amber-400"></i> Official Eligibility Criteria Matrix (2026-27)
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-1" data-i18n="matrixSub">
+                        Department-wise qualification rule sheet compiled directly from government circulars.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-1 bg-navy-950 p-1 rounded-lg border border-slate-700 text-xs font-semibold overflow-x-auto">
+                    <button class="matrix-tab px-3 py-1.5 rounded-md transition text-slate-300 hover:text-white" data-tab="GEN">GEN</button>
+                    <button class="matrix-tab px-3 py-1.5 rounded-md transition text-slate-300 hover:text-white" data-tab="SC_ST">SC / ST</button>
+                    <button class="matrix-tab px-3 py-1.5 rounded-md transition text-slate-300 hover:text-white" data-tab="OBC">OBC</button>
+                    <button class="matrix-tab px-3 py-1.5 rounded-md transition text-slate-300 hover:text-white" data-tab="MINORITY">Minority</button>
+                    <button class="matrix-tab px-3 py-1.5 rounded-md transition bg-amber-500 text-slate-950" data-tab="ALL">ALL</button>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <label class="font-bold text-slate-600" data-i18n="filterCourse">Course Filter:</label>
+                    <select id="matrixCourseFilter" class="rounded-lg border-slate-300 border p-1.5 bg-white font-medium text-slate-700">
+                        <option value="ALL">All Courses (सभी पाठ्यक्रम)</option>
+                        <option value="BTECH">B.Tech</option>
+                        <option value="BPHARMA">B.Pharma</option>
+                        <option value="MTECH">M.Tech</option>
+                        <option value="MPHARMA">M.Pharma</option>
+                        <option value="MBAMCA">MBA / MCA</option>
+                        <option value="BSC">B.Sc.</option>
+                        <option value="MSC">M.Sc.</option>
+                    </select>
+                </div>
+
+                <div class="relative w-full sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
+                    <input type="text" id="matrixSearch" placeholder="Search rules..." class="w-full rounded-lg border-slate-300 border p-1.5 pl-8 bg-white font-medium text-slate-700 focus:ring-navy-800">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-700 uppercase tracking-wider border-b border-slate-200 font-bold">
+                            <th class="p-3.5">Category</th>
+                            <th class="p-3.5">Course</th>
+                            <th class="p-3.5">Domicile</th>
+                            <th class="p-3.5">Admission Mode</th>
+                            <th class="p-3.5">Min Required Marks</th>
+                            <th class="p-3.5">Max Income Cap</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matrixTableBody" class="divide-y divide-slate-200 font-medium">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4 bg-amber-50/60 border-t border-amber-200 text-xs text-amber-900 flex items-start gap-2">
+                <i class="fa-solid fa-circle-info text-amber-600 mt-0.5"></i>
+                <p data-i18n="minorityNote">
+                    <strong>Note:</strong> Guidelines updated per Social Welfare, OBC Welfare & Minority Department rules for Academic Year 2026-27.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="bg-navy-950 text-slate-400 py-6 border-t border-navy-800 text-xs no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-2">
+            <p data-i18n="footerDept">Uttar Pradesh State Scholarship Portal (Department of Social Welfare, OBC Welfare & Minority Welfare)</p>
+            <p class="text-slate-500" data-i18n="footerDisclaimer">Disclaimer: This tool is built based on official UP Scholarship eligibility circular guidelines for AY 2026-27.</p>
+        </div>
+    </footer>
+
+    <div class="print-only p-8 max-w-3xl mx-auto font-sans">
+        <div class="text-center border-b-2 border-navy-900 pb-4 mb-6">
+            <h1 class="text-xl font-bold uppercase text-navy-900">Government of Uttar Pradesh</h1>
+            <h2 class="text-base font-semibold text-slate-700">Department of Social Welfare / OBC / Minority Welfare</h2>
+            <h3 class="text-sm font-bold text-amber-600 mt-1 uppercase">Scholarship Eligibility Preliminary Assessment Card (AY 2026-27)</h3>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-xs mb-6 border p-4 rounded-lg bg-slate-50">
+            <div><strong>Verification Date:</strong> <span id="printDate"></span></div>
+            <div><strong>Reference ID:</strong> UP-SCH-2026-<span id="printRef"></span></div>
+            <div><strong>Domicile:</strong> <span id="printDomicile"></span></div>
+            <div><strong>Category:</strong> <span id="printCategory"></span></div>
+            <div><strong>Course Enrolled:</strong> <span id="printCourse"></span></div>
+            <div><strong>Admission Mode:</strong> <span id="printMode"></span></div>
+            <div><strong>Qualifying Percentage:</strong> <span id="printMarks"></span></div>
+            <div><strong>Annual Family Income:</strong> <span id="printIncome"></span></div>
+        </div>
+
+        <div class="text-center p-4 rounded-xl border-2 mb-6" id="printStatusBox">
+            <div class="text-lg font-bold uppercase" id="printStatusTitle"></div>
+            <div class="text-xs mt-1" id="printStatusSub"></div>
+        </div>
+
+        <div class="mb-6">
+            <h4 class="font-bold text-xs uppercase mb-2">Parameter Evaluation Summary:</h4>
+            <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-700" id="printChecklistSummary">
+            </ul>
+        </div>
+
+        <div class="mt-12 text-[10px] text-slate-500 border-t pt-4 text-center">
+            This document is a computer-generated preliminary verification summary based on candidate input against official AY 2026-27 criteria.
+        </div>
+    </div>
+
+
+    <script>
+        const i18n = {
+            en: {
+                deptSub: "Department of Social Welfare, OBC & Minority Welfare, UP",
+                portalTitle: "UP State Scholarship Eligibility Checking Tool",
+                viewMatrixBtn: "Rules Matrix",
+                noticeHeader: "Academic Session 2026-27 Guidelines Verification",
+                noticeText: "Verify scholarship eligibility dynamically based on social category (General, SC/ST, OBC, Minority), course level, admission channel, and income caps.",
+                formHeading: "Enter Candidate Details",
+                resetForm: "Reset Form",
+                demoPresetsLabel: "Quick Test Profiles:",
+                domicileLabel: "1. Domicile / Residence Status",
+                upResident: "Uttar Pradesh Resident",
+                nonUpResident: "Non-UP / Other State",
+                categoryLabel: "2. Social Category",
+                catGen: "General (सामान्य)",
+                catScSt: "SC / ST (अनुसूचित जाति / जनजाति)",
+                catObc: "OBC (अन्य पिछड़ा वर्ग)",
+                catMinority: "Minority (अल्पसंख्यक)",
+                minorityCommunityLabel: "Minority Community",
+                minMuslim: "Muslim (मुस्लिम)",
+                minSikh: "Sikh (सिख)",
+                minChristian: "Christian (ईसाई)",
+                minBuddhist: "Buddhist (बौद्ध)",
+                minJain: "Jain (जैन)",
+                minParsi: "Parsi (पारसी)",
+                courseLabel: "3. Course Enrolled",
+                admissionModeLabel: "4. Mode of Admission",
+                modeEntrance: "Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)",
+                modeMerit: "Direct Counseling / Merit Base Counseling (10+2/Grad Merit)",
+                modeDirect: "Direct Admission (Direct Seat / Non-Counseling)",
+                marksLabelUndergrad: "5. Qualifying Marks (12th / Diploma %)",
+                marksLabelPostgrad: "5. Graduation Marks (%)",
+                marksHelperUg: "Enter total percentage achieved in 12th Standard or Diploma.",
+                marksHelperPg: "Enter total aggregate percentage achieved in Graduation degree.",
+                incomeLabel: "6. Annual Family Income (in ₹)",
+                checkBtn: "Verify Scholarship Eligibility",
+                resultCardHeading: "Eligibility Report Card",
+                statusEligible: "ELIGIBLE FOR SCHOLARSHIP",
+                statusEligibleSub: "You meet all prescribed criteria under UP Govt guidelines.",
+                statusIneligible: "NOT ELIGIBLE FOR SCHOLARSHIP",
+                statusIneligibleSub: "One or more required qualification parameters were not met.",
+                breakdownTitle: "Parameter Eligibility Breakdown",
+                chkDomicile: "Domicile Status (UP Permanent)",
+                chkIncome: "Family Annual Income Threshold",
+                chkAdmission: "Admission Mode Compliance",
+                chkMarks: "Academic Qualification Marks",
+                reasonBoxTitle: "Reasons for Ineligibility / Requirements:",
+                printBtn: "Print / Save Result Card (PDF)",
+                matrixTitle: "Official Eligibility Criteria Matrix (2026-27)",
+                matrixSub: "Department-wise qualification rule sheet compiled directly from government circulars.",
+                filterCourse: "Course Filter:",
+                minorityNote: "Note: Guidelines updated per Social Welfare, OBC Welfare & Minority Department rules for Academic Year 2026-27.",
+                footerDept: "Uttar Pradesh State Scholarship Portal (Department of Social Welfare, OBC Welfare & Minority Welfare)",
+                footerDisclaimer: "Disclaimer: This tool is built based on official UP Scholarship eligibility circular guidelines for AY 2026-27."
+            },
+            hi: {
+                deptSub: "समाज कल्याण, पिछड़ा वर्ग कल्याण एवं अल्पसंख्यक कल्याण विभाग, उत्तर प्रदेश",
+                portalTitle: "उत्तर प्रदेश राज्य छात्रवृत्ति पात्रता जांच टूल",
+                viewMatrixBtn: "पात्रता नियम मैट्रिक्स",
+                noticeHeader: "शैक्षणिक सत्र 2026-27 दिशानिर्देश सत्यापन",
+                noticeText: "सामाजिक वर्ग (सामान्य, एससी/एसटी, ओबीसी, अल्पसंख्यक), पाठ्यक्रम, प्रवेश का माध्यम एवं आय सीमा के अनुसार छात्रवृत्ति पात्रता की तुरंत जांच करें।",
+                formHeading: "आवेदक का विवरण भरें",
+                resetForm: "फॉर्म रीसेट करें",
+                demoPresetsLabel: "त्वरित परीक्षण प्रोफाइल (Presets):",
+                domicileLabel: "1. निवास / अधिवास की स्थिति",
+                upResident: "उत्तर प्रदेश के मूल निवासी",
+                nonUpResident: "उत्तर प्रदेश के बाहर (अन्य राज्य)",
+                categoryLabel: "2. सामाजिक श्रेणी (Category)",
+                catGen: "General (सामान्य)",
+                catScSt: "SC / ST (अनुसूचित जाति / जनजाति)",
+                catObc: "OBC (अन्य पिछड़ा वर्ग)",
+                catMinority: "Minority (अल्पसंख्यक)",
+                minorityCommunityLabel: "अल्पसंख्यक समुदाय",
+                minMuslim: "मुस्लिम (Muslim)",
+                minSikh: "सिख (Sikh)",
+                minChristian: "ईसाई (Christian)",
+                minBuddhist: "बौद्ध (Buddhist)",
+                minJain: "जैन (Jain)",
+                minParsi: "पारसी (Parsi)",
+                courseLabel: "3. चयनित पाठ्यक्रम (Course)",
+                admissionModeLabel: "4. प्रवेश का तरीका (Admission Mode)",
+                modeEntrance: "Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)",
+                modeMerit: "Direct Counseling / Merit Base Counseling (10+2/मेरिट आधारित)",
+                modeDirect: "Direct Admission (डायरेक्ट एडमिशन / नॉन-काउंसिलिंग)",
+                marksLabelUndergrad: "5. आवश्यक अंक (12वीं / डिप्लोमा %)",
+                marksLabelPostgrad: "5. स्नातक अंक (Graduation %)",
+                marksHelperUg: "12वीं या डिप्लोमा परीक्षा में प्राप्त कुल प्रतिशत अंक दर्ज करें।",
+                marksHelperPg: "स्नातक (Graduation) की परीक्षा में प्राप्त कुल प्रतिशत अंक दर्ज करें।",
+                incomeLabel: "6. वार्षिक पारिवारिक आय (₹ में)",
+                checkBtn: "छात्रवृत्ति पात्रता की जांच करें",
+                resultCardHeading: "पात्रता रिपोर्ट कार्ड",
+                statusEligible: "छात्रवृत्ति हेतु पात्र (ELIGIBLE)",
+                statusEligibleSub: "आप उत्तर प्रदेश सरकार के सभी निर्धारित नियमों को पूरा करते हैं।",
+                statusIneligible: "छात्रवृत्ति हेतु अपात्र (NOT ELIGIBLE)",
+                statusIneligibleSub: "आप एक या अधिक अनिवार्य योग्यताओं को पूरा नहीं करते हैं।",
+                breakdownTitle: "मापदंड पात्रता विवरण (Checklist)",
+                chkDomicile: "निवास स्थिति (उत्तर प्रदेश मूल निवासी)",
+                chkIncome: "पारिवारिक वार्षिक आय सीमा",
+                chkAdmission: "प्रवेश के तरीके का अनुपालन",
+                chkMarks: "शैक्षणिक योग्यता अंक (%)",
+                reasonBoxTitle: "अपात्रता के मुख्य कारण / अनिवार्य आवश्यकताएं:",
+                printBtn: "परिणाम कार्ड प्रिंट / सहेजें (PDF)",
+                matrixTitle: "आधिकारिक पात्रता नियम सारणी (2026-27)",
+                matrixSub: "सरकारी शासनादेश के अनुसार विभागवार योग्यता नियम सूची।",
+                filterCourse: "पाठ्यक्रम फ़िल्टर:",
+                minorityNote: "टिप्पणी: समाज कल्याण, पिछड़ा वर्ग कल्याण एवं अल्पसंख्यक कल्याण विभाग की शासनादेश नियमावली 2026-27 के अनुसार प्रस्तुत।",
+                footerDept: "उत्तर प्रदेश राज्य छात्रवृत्ति पोर्टल (समाज कल्याण, पिछड़ा वर्ग कल्याण एवं अल्पसंख्यक कल्याण विभाग)",
+                footerDisclaimer: "अस्वीकरण: यह टूल शैक्षणिक सत्र 2026-27 के आधिकारिक दिशानिर्देशों पर आधारित है।"
+            }
+        };
+
+        let currentLang = 'en';
+
+        const elements = {
+            langEnBtn: document.getElementById('langEnBtn'),
+            langHiBtn: document.getElementById('langHiBtn'),
+            categorySelect: document.getElementById('category'),
+            minorityWrapper: document.getElementById('minorityCommunityWrapper'),
+            courseSelect: document.getElementById('course'),
+            admissionModeSelect: document.getElementById('admissionMode'),
+            obcNoticeNote: document.getElementById('obcNoticeNote'),
+            marksLabelText: document.getElementById('marksLabelText'),
+            marksHelperText: document.getElementById('marksHelperText'),
+            incomeInput: document.getElementById('income'),
+            incomeLakhDisplay: document.getElementById('incomeLakhDisplay'),
+            checkBtn: document.getElementById('checkEligibilityBtn'),
+            resetBtn: document.getElementById('resetBtn'),
+            form: document.getElementById('eligibilityForm'),
+            
+            // Result elements
+            statusCard: document.getElementById('statusCard'),
+            statusIconWrapper: document.getElementById('statusIconWrapper'),
+            statusBadgeText: document.getElementById('statusBadgeText'),
+            statusSubtext: document.getElementById('statusSubtext'),
+            
+            // Checklist elements
+            chkDomicileIcon: document.getElementById('chkDomicileIcon'),
+            chkDomicileBadge: document.getElementById('chkDomicileBadge'),
+            
+            chkIncomeIcon: document.getElementById('chkIncomeIcon'),
+            chkIncomeBadge: document.getElementById('chkIncomeBadge'),
+            chkIncomeDetails: document.getElementById('chkIncomeDetails'),
+            
+            chkAdmissionIcon: document.getElementById('chkAdmissionIcon'),
+            chkAdmissionBadge: document.getElementById('chkAdmissionBadge'),
+            chkAdmissionDetails: document.getElementById('chkAdmissionDetails'),
+
+            chkMarksIcon: document.getElementById('chkMarksIcon'),
+            chkMarksBadge: document.getElementById('chkMarksBadge'),
+            chkMarksDetails: document.getElementById('chkMarksDetails'),
+
+            reasonAlertBox: document.getElementById('reasonAlertBox'),
+            reasonList: document.getElementById('reasonList'),
+            printReportBtn: document.getElementById('printReportBtn'),
+
+            // Matrix
+            matrixTableBody: document.getElementById('matrixTableBody'),
+            matrixCourseFilter: document.getElementById('matrixCourseFilter'),
+            matrixSearch: document.getElementById('matrixSearch')
+        };
+
+        function updateAdmissionModeOptions() {
+            const category = elements.categorySelect.value;
+            const currentSelectedMode = elements.admissionModeSelect.value;
+
+            // Clear current options
+            elements.admissionModeSelect.innerHTML = '';
+
+            const options = [];
+
+            if (category === 'OBC') {
+                // EXPLICIT REQUIREMENT: Hide "Direct Counseling / Merit Base Counseling (10+2/Grad Merit)" for OBC
+                options.push({
+                    value: 'ENTRANCE_COUNSELING',
+                    textEn: 'Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)',
+                    textHi: 'Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)'
+                });
+                options.push({
+                    value: 'DIRECT_ADMISSION',
+                    textEn: 'Direct Admission (डायरेक्ट एडमिशन / प्रबंधन कोटा)',
+                    textHi: 'Direct Admission (डायरेक्ट एडमिशन / प्रबंधन कोटा)'
+                });
+                elements.obcNoticeNote.classList.remove('hidden');
+            } else if (category === 'MINORITY') {
+                options.push({
+                    value: 'ENTRANCE_COUNSELING',
+                    textEn: 'Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)',
+                    textHi: 'Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)'
+                });
+                options.push({
+                    value: 'DIRECT_ADMISSION',
+                    textEn: 'Direct Admission (नॉन-काउंसिलिंग / डायरेक्ट)',
+                    textHi: 'Direct Admission (नॉन-काउंसिलिंग / डायरेक्ट)'
+                });
+                elements.obcNoticeNote.classList.add('hidden');
+            } else {
+                // General and SC/ST Categories
+                options.push({
+                    value: 'ENTRANCE_COUNSELING',
+                    textEn: 'Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)',
+                    textHi: 'Entrance Exam Base Counseling (प्रवेश परीक्षा काउंसिलिंग)'
+                });
+                options.push({
+                    value: 'MERIT_COUNSELING',
+                    textEn: 'Direct Counseling / Merit Base Counseling (10+2/Grad Merit)',
+                    textHi: 'Direct Counseling / Merit Base Counseling (10+2/Grad Merit)'
+                });
+                options.push({
+                    value: 'DIRECT_ADMISSION',
+                    textEn: 'Direct Admission (नॉन-काउंसिलिंग / डायरेक्ट)',
+                    textHi: 'Direct Admission (नॉन-काउंसिलिंग / डायरेक्ट)'
+                });
+                elements.obcNoticeNote.classList.add('hidden');
+            }
+
+            options.forEach(opt => {
+                const optionElem = document.createElement('option');
+                optionElem.value = opt.value;
+                optionElem.textContent = currentLang === 'hi' ? opt.textHi : opt.textEn;
+                elements.admissionModeSelect.appendChild(optionElem);
+            });
+
+            // Preserve selection if available in new options list, else pick default
+            if (options.some(o => o.value === currentSelectedMode)) {
+                elements.admissionModeSelect.value = currentSelectedMode;
+            } else {
+                elements.admissionModeSelect.value = options[0].value;
+            }
+        }
+
+        function updateCourseFields() {
+            const course = elements.courseSelect.value;
+            const isPG = ['MTECH', 'MPHARMA', 'MBAMCA', 'MSC'].includes(course);
+            
+            if (isPG) {
+                elements.marksLabelText.textContent = i18n[currentLang].marksLabelPostgrad;
+                elements.marksHelperText.textContent = i18n[currentLang].marksHelperPg;
+            } else {
+                elements.marksLabelText.textContent = i18n[currentLang].marksLabelUndergrad;
+                elements.marksHelperText.textContent = i18n[currentLang].marksHelperUg;
+            }
+        }
+
+        function updateCategoryFields() {
+            const cat = elements.categorySelect.value;
+            if (cat === 'MINORITY') {
+                elements.minorityWrapper.classList.remove('hidden');
+            } else {
+                elements.minorityWrapper.classList.add('hidden');
+            }
+            updateAdmissionModeOptions();
+        }
+
+        function updateIncomeDisplay() {
+            const val = parseFloat(elements.incomeInput.value) || 0;
+            const lakhs = (val / 100000).toFixed(2);
+            elements.incomeLakhDisplay.textContent = `Equivalent to: ₹ ${lakhs} Lakhs (${val.toLocaleString('en-IN')} INR)`;
+        }
+
+        function calculateEligibility() {
+            const domicile = document.querySelector('input[name="domicile"]:checked').value;
+            const category = elements.categorySelect.value;
+            const course = elements.courseSelect.value;
+            const admissionMode = elements.admissionModeSelect.value;
+            const marks = parseFloat(document.getElementById('marks').value) || 0;
+            const income = parseFloat(elements.incomeInput.value) || 0;
+
+            const isPG = ['MTECH', 'MPHARMA', 'MBAMCA', 'MSC'].includes(course);
+            const isProfessionalTech = ['BTECH', 'BPHARMA'].includes(course);
+            const isProfessionalPG = ['MTECH', 'MPHARMA', 'MBAMCA'].includes(course);
+
+            let result = {
+                isEligible: true,
+                domicilePass: false,
+                incomePass: false,
+                admissionPass: false,
+                marksPass: false,
+                maxIncome: 200000,
+                requiredMarksText: "NA",
+                requiredAdmissionText: "Any",
+                reasons: []
+            };
+
+            // 1. Domicile Rule
+            if (domicile === 'UP') {
+                result.domicilePass = true;
+            } else {
+                result.domicilePass = false;
+                result.isEligible = false;
+                result.reasons.push(currentLang === 'hi' 
+                    ? "केवल उत्तर प्रदेश के मूल निवासी छात्र ही इस छात्रवृत्ति योजना हेतु पात्र हैं।" 
+                    : "Scholarship is strictly reserved for permanent residents of Uttar Pradesh.");
+            }
+
+            // 2. Income Limit Rule
+            if (category === 'SC_ST') {
+                result.maxIncome = 250000; // 2.5 Lakhs
+            } else {
+                result.maxIncome = 200000; // 2.0 Lakhs for GEN, OBC, Minority
+            }
+
+            if (income <= result.maxIncome) {
+                result.incomePass = true;
+            } else {
+                result.incomePass = false;
+                result.isEligible = false;
+                const limitLakhs = (result.maxIncome / 100000).toFixed(1);
+                const userLakhs = (income / 100000).toFixed(2);
+                result.reasons.push(currentLang === 'hi'
+                    ? `वार्षिक पारिवारिक आय (₹${userLakhs} लाख) निर्धारित अधिकतम सीमा ₹${limitLakhs} लाख से अधिक है।`
+                    : `Annual family income (₹${userLakhs} Lakhs) exceeds prescribed maximum limit of ₹${limitLakhs} Lakhs for ${category} category.`);
+            }
+
+            if (category === 'GEN') {
+                // GENERAL CATEGORY RULES
+                if (isProfessionalTech || isProfessionalPG) {
+                    result.requiredAdmissionText = "Entrance/Merit Counseling";
+                    if (admissionMode === 'ENTRANCE_COUNSELING' || admissionMode === 'MERIT_COUNSELING') {
+                        result.admissionPass = true;
+                    } else {
+                        result.admissionPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi'
+                            ? "सामान्य वर्ग में पेशेवर पाठ्यक्रमों हेतु प्रवेश काउंसिलिंग (Entrance or Merit) के माध्यम से होना अनिवार्य है।"
+                            : "General category students in professional courses must be admitted through Entrance or Merit Direct Counseling.");
+                    }
+
+                    const minReq = isProfessionalTech ? 60 : 55;
+                    result.requiredMarksText = `Min ${minReq}% (${isProfessionalTech ? '12th/Diploma' : 'Graduation'})`;
+                    if (marks >= minReq) {
+                        result.marksPass = true;
+                    } else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi'
+                            ? `सामान्य वर्ग के लिए इस पाठ्यक्रम में न्यूनतम ${minReq}% अंक अनिवार्य हैं (आपके अंक: ${marks}%)।`
+                            : `Minimum ${minReq}% marks required for General category in this course (Your marks: ${marks}%).`);
+                    }
+                } else if (course === 'BSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "Min 60% in 12th";
+                    if (marks >= 60) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "बी.एससी. हेतु 12वीं में न्यूनतम 60% अंक अनिवार्य हैं।" : "Minimum 60% marks required in 12th for B.Sc.");
+                    }
+                } else if (course === 'MSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "Min 55% in Graduation";
+                    if (marks >= 55) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "एम.एससी. हेतु स्नातक में न्यूनतम 55% अंक अनिवार्य हैं।" : "Minimum 55% marks required in Graduation for M.Sc.");
+                    }
+                }
+            } 
+            else if (category === 'SC_ST') {
+                // SC / ST CATEGORY RULES
+                if (isProfessionalTech || isProfessionalPG) {
+                    result.requiredAdmissionText = "Entrance/Merit Counseling";
+                    if (admissionMode === 'ENTRANCE_COUNSELING' || admissionMode === 'MERIT_COUNSELING') {
+                        result.admissionPass = true;
+                    } else {
+                        result.admissionPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi'
+                            ? "एससी/एसटी वर्ग में पेशेवर पाठ्यक्रमों हेतु काउंसिलिंग के माध्यम से प्रवेश अनिवार्य है।"
+                            : "SC/ST category students in professional courses must be admitted through Counseling.");
+                    }
+
+                    if (isProfessionalTech) {
+                        result.requiredMarksText = "NA (Passed)";
+                        result.marksPass = true;
+                    } else {
+                        result.requiredMarksText = "Min 50% in Graduation";
+                        if (marks >= 50) result.marksPass = true;
+                        else {
+                            result.marksPass = false;
+                            result.isEligible = false;
+                            result.reasons.push(currentLang === 'hi' ? "एससी/एसटी वर्ग के लिए पीजी पाठ्यक्रमों में स्नातक में न्यूनतम 50% अंक अनिवार्य हैं।" : "Minimum 50% marks required in Graduation for SC/ST in PG professional courses.");
+                        }
+                    }
+                } else if (course === 'BSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "NA (Passed)";
+                    result.marksPass = true;
+                } else if (course === 'MSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "Min 50% in Graduation";
+                    if (marks >= 50) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "एम.एससी. हेतु स्नातक में न्यूनतम 50% अंक अनिवार्य हैं।" : "Minimum 50% marks required in Graduation for SC/ST M.Sc.");
+                    }
+                }
+            } 
+            else if (category === 'OBC') {
+                // OBC CATEGORY UPDATED RULES
+                if (isProfessionalTech) {
+                    if (admissionMode === 'ENTRANCE_COUNSELING') {
+                        result.admissionPass = true;
+                        result.requiredAdmissionText = "Entrance Exam Base Counseling";
+                        result.requiredMarksText = "NA (Entrance Counseling Pass)";
+                        result.marksPass = true; // Minimum % is NA for Entrance Exam Base Counseling
+                    } else if (admissionMode === 'DIRECT_ADMISSION') {
+                        result.admissionPass = true;
+                        result.requiredAdmissionText = "Direct Admission Allowed";
+                        result.requiredMarksText = "Min 60% in 12th/Diploma";
+                        if (marks >= 60) {
+                            result.marksPass = true;
+                        } else {
+                            result.marksPass = false;
+                            result.isEligible = false;
+                            result.reasons.push(currentLang === 'hi'
+                                ? "ओबीसी वर्ग में B.Tech / B.Pharma में डायरेक्ट प्रवेश हेतु 12वीं/डिप्लोमा में न्यूनतम 60% अंक आवश्यक हैं।"
+                                : "Minimum 60% marks required in 12th/Diploma for OBC Direct Admission in B.Tech / B.Pharma.");
+                        }
+                    } else {
+                        result.admissionPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "अमान्य प्रवेश माध्यम।" : "Invalid admission mode selected for OBC.");
+                    }
+                } else if (isProfessionalPG) {
+                    if (admissionMode === 'ENTRANCE_COUNSELING') {
+                        result.admissionPass = true;
+                        result.requiredAdmissionText = "Entrance Exam Base Counseling";
+                        result.requiredMarksText = "NA (Entrance Counseling Pass)";
+                        result.marksPass = true;
+                    } else if (admissionMode === 'DIRECT_ADMISSION') {
+                        result.admissionPass = true;
+                        result.requiredAdmissionText = "Direct Admission Allowed";
+                        result.requiredMarksText = "Min 50% in Graduation";
+                        if (marks >= 50) {
+                            result.marksPass = true;
+                        } else {
+                            result.marksPass = false;
+                            result.isEligible = false;
+                            result.reasons.push(currentLang === 'hi'
+                                ? "ओबीसी वर्ग में डायरेक्ट प्रवेश हेतु स्नातक (Graduation) में न्यूनतम 50% अंक आवश्यक हैं।"
+                                : "Minimum 50% marks required in Graduation for OBC Direct Admission in PG courses.");
+                        }
+                    } else {
+                        result.admissionPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "अमान्य प्रवेश माध्यम।" : "Invalid admission mode selected for OBC.");
+                    }
+                } else if (course === 'BSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "Min 60% in 12th";
+                    if (marks >= 60) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "बी.एससी. हेतु 12वीं में न्यूनतम 60% अंक अनिवार्य हैं।" : "Minimum 60% marks required in 12th for B.Sc.");
+                    }
+                } else if (course === 'MSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "Min 50% in Graduation";
+                    if (marks >= 50) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "एम.एससी. हेतु स्नातक में न्यूनतम 50% अंक अनिवार्य हैं।" : "Minimum 50% marks required in Graduation for M.Sc.");
+                    }
+                }
+            } 
+            else if (category === 'MINORITY') {
+                // MINORITY CATEGORY RULES
+                if (isProfessionalTech || isProfessionalPG) {
+                    result.requiredAdmissionText = "Entrance Exam Counseling Only";
+                    if (admissionMode === 'ENTRANCE_COUNSELING') {
+                        result.admissionPass = true;
+                    } else {
+                        result.admissionPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi'
+                            ? "अल्पसंख्यक वर्ग के छात्रों हेतु पेशेवर पाठ्यक्रमों में प्रवेश केवल प्रवेश परीक्षा आधारित काउंसिलिंग द्वारा होना अनिवार्य है।"
+                            : "Minority category students in professional courses must be admitted strictly through Entrance Exam Based Counseling.");
+                    }
+
+                    result.requiredMarksText = isProfessionalTech ? "Min 50% in 12th/Diploma" : "Min 50% in Graduation";
+                    if (marks >= 50) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi'
+                            ? "अल्पसंख्यक वर्ग हेतु इस पाठ्यक्रम में न्यूनतम 50% अंक अनिवार्य हैं।"
+                            : "Minimum 50% marks required for Minority category in this course.");
+                    }
+                } else if (course === 'BSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "Min 50% in 12th";
+                    if (marks >= 50) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "बी.एससी. हेतु 12वीं में न्यूनतम 50% अंक अनिवार्य हैं।" : "Minimum 50% marks required in 12th for B.Sc.");
+                    }
+                } else if (course === 'MSC') {
+                    result.admissionPass = true;
+                    result.requiredMarksText = "Min 50% in Graduation";
+                    if (marks >= 50) result.marksPass = true;
+                    else {
+                        result.marksPass = false;
+                        result.isEligible = false;
+                        result.reasons.push(currentLang === 'hi' ? "एम.एससी. हेतु स्नातक में न्यूनतम 50% अंक अनिवार्य हैं।" : "Minimum 50% marks required in Graduation for M.Sc.");
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        function updateResultUI() {
+            const evalResult = calculateEligibility();
+            const incomeVal = parseFloat(elements.incomeInput.value) || 0;
+            const marksVal = parseFloat(document.getElementById('marks').value) || 0;
+
+            if (evalResult.isEligible) {
+                elements.statusCard.className = "p-5 rounded-2xl border transition-all text-center relative overflow-hidden bg-emerald-50 border-emerald-300 shadow-sm";
+                elements.statusIconWrapper.className = "w-16 h-16 rounded-full mx-auto flex items-center justify-center text-2xl mb-2 bg-emerald-100 text-emerald-700";
+                elements.statusIconWrapper.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+                elements.statusBadgeText.className = "text-xl font-extrabold text-emerald-800 tracking-wide uppercase";
+                elements.statusBadgeText.textContent = i18n[currentLang].statusEligible;
+                elements.statusSubtext.className = "text-xs text-emerald-700 mt-1 font-medium";
+                elements.statusSubtext.textContent = i18n[currentLang].statusEligibleSub;
+
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 35, spread: 60, origin: { y: 0.7 } });
+                }
+            } else {
+                elements.statusCard.className = "p-5 rounded-2xl border transition-all text-center relative overflow-hidden bg-rose-50 border-rose-300 shadow-sm";
+                elements.statusIconWrapper.className = "w-16 h-16 rounded-full mx-auto flex items-center justify-center text-2xl mb-2 bg-rose-100 text-rose-700";
+                elements.statusIconWrapper.innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
+                elements.statusBadgeText.className = "text-xl font-extrabold text-rose-800 tracking-wide uppercase";
+                elements.statusBadgeText.textContent = i18n[currentLang].statusIneligible;
+                elements.statusSubtext.className = "text-xs text-rose-700 mt-1 font-medium";
+                elements.statusSubtext.textContent = i18n[currentLang].statusIneligibleSub;
+            }
+
+            // Checklist Badges
+            updateCheckRow(elements.chkDomicileIcon, elements.chkDomicileBadge, evalResult.domicilePass);
+            updateCheckRow(elements.chkIncomeIcon, elements.chkIncomeBadge, evalResult.incomePass);
+            elements.chkIncomeDetails.textContent = `Cap: ₹${(evalResult.maxIncome / 100000).toFixed(1)}L | User: ₹${(incomeVal / 100000).toFixed(2)}L`;
+
+            updateCheckRow(elements.chkAdmissionIcon, elements.chkAdmissionBadge, evalResult.admissionPass);
+            elements.chkAdmissionDetails.textContent = `Rule: ${evalResult.requiredAdmissionText}`;
+
+            updateCheckRow(elements.chkMarksIcon, elements.chkMarksBadge, evalResult.marksPass);
+            elements.chkMarksDetails.textContent = `Req: ${evalResult.requiredMarksText} | User: ${marksVal}%`;
+
+            if (evalResult.reasons.length > 0) {
+                elements.reasonAlertBox.classList.remove('hidden');
+                elements.reasonList.innerHTML = evalResult.reasons.map(r => `<li>${r}</li>`).join('');
+            } else {
+                elements.reasonAlertBox.classList.add('hidden');
+                elements.reasonList.innerHTML = '';
+            }
+
+            populatePrintData(evalResult);
+        }
+
+        function updateCheckRow(iconElem, badgeElem, isPass) {
+            if (isPass) {
+                iconElem.className = "text-emerald-600 text-sm";
+                iconElem.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+                badgeElem.className = "font-bold px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 uppercase";
+                badgeElem.textContent = "PASSED";
+            } else {
+                iconElem.className = "text-rose-600 text-sm";
+                iconElem.innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
+                badgeElem.className = "font-bold px-2 py-0.5 rounded text-[10px] bg-rose-100 text-rose-800 uppercase";
+                badgeElem.textContent = "FAILED";
+            }
+        }
+
+        const matrixData = [
+            // General
+            { cat: 'GEN', course: 'B.Tech / B.Pharma', domicile: 'Uttar Pradesh', mode: 'Entrance / 10+2 Merit Counseling', marks: '60% in 12th/Diploma', income: '₹ 2.0 Lakhs' },
+            { cat: 'GEN', course: 'M.Tech / M.Pharma / MBA / MCA', domicile: 'Uttar Pradesh', mode: 'Entrance / Merit Counseling', marks: '55% in Graduation', income: '₹ 2.0 Lakhs' },
+            { cat: 'GEN', course: 'B.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: '60% in 12th', income: '₹ 2.0 Lakhs' },
+            { cat: 'GEN', course: 'M.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: '55% in Graduation', income: '₹ 2.0 Lakhs' },
+
+            // SC / ST
+            { cat: 'SC_ST', course: 'B.Tech / B.Pharma', domicile: 'Uttar Pradesh', mode: 'Entrance / 10+2 Merit Counseling', marks: 'NA (Passed)', income: '₹ 2.5 Lakhs' },
+            { cat: 'SC_ST', course: 'M.Tech / M.Pharma / MBA / MCA', domicile: 'Uttar Pradesh', mode: 'Entrance / Merit Counseling', marks: '50% in Graduation', income: '₹ 2.5 Lakhs' },
+            { cat: 'SC_ST', course: 'B.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: 'NA (Passed)', income: '₹ 2.5 Lakhs' },
+            { cat: 'SC_ST', course: 'M.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: '50% in Graduation', income: '₹ 2.5 Lakhs' },
+
+            // OBC
+            { cat: 'OBC', course: 'B.Tech / B.Pharma', domicile: 'Uttar Pradesh', mode: 'Entrance Exam Base Counseling', marks: 'NA (Counseling Pass)', income: '₹ 2.0 Lakhs' },
+            { cat: 'OBC', course: 'B.Tech / B.Pharma', domicile: 'Uttar Pradesh', mode: 'Direct Admission', marks: '60% in 12th/Diploma', income: '₹ 2.0 Lakhs' },
+            { cat: 'OBC', course: 'M.Tech / M.Pharma / MBA / MCA', domicile: 'Uttar Pradesh', mode: 'Entrance Exam Base Counseling', marks: 'NA (Counseling Pass)', income: '₹ 2.0 Lakhs' },
+            { cat: 'OBC', course: 'M.Tech / M.Pharma / MBA / MCA', domicile: 'Uttar Pradesh', mode: 'Direct Admission', marks: '50% in Graduation', income: '₹ 2.0 Lakhs' },
+            { cat: 'OBC', course: 'B.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: '60% in 12th', income: '₹ 2.0 Lakhs' },
+            { cat: 'OBC', course: 'M.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: '50% in Graduation', income: '₹ 2.0 Lakhs' },
+
+            // Minority
+            { cat: 'MINORITY', course: 'B.Tech / B.Pharma', domicile: 'Uttar Pradesh', mode: 'Entrance Exam Counseling Only', marks: '50% in 12th/Diploma', income: '₹ 2.0 Lakhs' },
+            { cat: 'MINORITY', course: 'M.Tech / M.Pharma / MBA / MCA', domicile: 'Uttar Pradesh', mode: 'Entrance Exam Counseling Only', marks: '50% in Graduation', income: '₹ 2.0 Lakhs' },
+            { cat: 'MINORITY', course: 'B.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: '50% in 12th', income: '₹ 2.0 Lakhs' },
+            { cat: 'MINORITY', course: 'M.Sc.', domicile: 'Uttar Pradesh', mode: 'Direct / Regular', marks: '50% in Graduation', income: '₹ 2.0 Lakhs' }
+        ];
+
+        let activeMatrixTab = 'ALL';
+
+        function renderMatrixTable() {
+            const courseFilter = elements.matrixCourseFilter.value;
+            const searchTxt = elements.matrixSearch.value.toLowerCase();
+
+            const filtered = matrixData.filter(row => {
+                const matchTab = (activeMatrixTab === 'ALL' || row.cat === activeMatrixTab);
+                
+                let matchCourse = true;
+                if (courseFilter === 'BTECH' || courseFilter === 'BPHARMA') {
+                    matchCourse = row.course.includes('B.Tech') || row.course.includes('B.Pharma');
+                } else if (['MTECH', 'MPHARMA', 'MBAMCA'].includes(courseFilter)) {
+                    matchCourse = row.course.includes('M.Tech') || row.course.includes('MBA');
+                } else if (courseFilter === 'BSC') {
+                    matchCourse = row.course === 'B.Sc.';
+                } else if (courseFilter === 'MSC') {
+                    matchCourse = row.course === 'M.Sc.';
+                }
+
+                const matchSearch = row.course.toLowerCase().includes(searchTxt) ||
+                                    row.cat.toLowerCase().includes(searchTxt) ||
+                                    row.mode.toLowerCase().includes(searchTxt);
+
+                return matchTab && matchCourse && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                elements.matrixTableBody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400 italic">No matching criteria found.</td></tr>`;
+                return;
+            }
+
+            elements.matrixTableBody.innerHTML = filtered.map(r => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-3.5"><span class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 text-slate-800">${r.cat}</span></td>
+                    <td class="p-3.5 font-semibold text-slate-800">${r.course}</td>
+                    <td class="p-3.5 text-slate-600">${r.domicile}</td>
+                    <td class="p-3.5 text-slate-700">${r.mode}</td>
+                    <td class="p-3.5 font-bold text-navy-800">${r.marks}</td>
+                    <td class="p-3.5 font-semibold text-emerald-700">${r.income}</td>
+                </tr>
+            `).join('');
+        }
+
+        const presets = {
+            obcBtechCounseling: { domicile: 'UP', category: 'OBC', course: 'BTECH', admissionMode: 'ENTRANCE_COUNSELING', marks: 52, income: 180000 },
+            obcBtechDirect: { domicile: 'UP', category: 'OBC', course: 'BTECH', admissionMode: 'DIRECT_ADMISSION', marks: 65, income: 180000 },
+            genBtechPass: { domicile: 'UP', category: 'GEN', course: 'BTECH', admissionMode: 'MERIT_COUNSELING', marks: 62, income: 180000 },
+            scMtechPass: { domicile: 'UP', category: 'SC_ST', course: 'MTECH', admissionMode: 'MERIT_COUNSELING', marks: 52, income: 220000 },
+            minorityFailDirect: { domicile: 'UP', category: 'MINORITY', minorityCommunity: 'Muslim', course: 'BTECH', admissionMode: 'DIRECT_ADMISSION', marks: 65, income: 180000 }
+        };
+
+        function applyPreset(presetKey) {
+            const data = presets[presetKey];
+            if (!data) return;
+
+            document.querySelector(`input[name="domicile"][value="${data.domicile}"]`).checked = true;
+            elements.categorySelect.value = data.category;
+            updateCategoryFields();
+
+            if (data.minorityCommunity) {
+                document.getElementById('minorityCommunity').value = data.minorityCommunity;
+            }
+
+            elements.courseSelect.value = data.course;
+            updateCourseFields();
+
+            elements.admissionModeSelect.value = data.admissionMode;
+            document.getElementById('marks').value = data.marks;
+            elements.incomeInput.value = data.income;
+            updateIncomeDisplay();
+
+            updateResultUI();
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            if (lang === 'hi') {
+                elements.langHiBtn.className = "px-3 py-1 text-xs font-semibold rounded-md transition-all bg-amber-500 text-slate-950 shadow";
+                elements.langEnBtn.className = "px-3 py-1 text-xs font-semibold rounded-md transition-all text-slate-300 hover:text-white";
+            } else {
+                elements.langEnBtn.className = "px-3 py-1 text-xs font-semibold rounded-md transition-all bg-amber-500 text-slate-950 shadow";
+                elements.langHiBtn.className = "px-3 py-1 text-xs font-semibold rounded-md transition-all text-slate-300 hover:text-white";
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n');
+                if (i18n[lang] && i18n[lang][key]) {
+                    elem.textContent = i18n[lang][key];
+                }
+            });
+
+            updateAdmissionModeOptions();
+            updateCourseFields();
+            updateIncomeDisplay();
+            updateResultUI();
+        }
+
+        function populatePrintData(evalResult) {
+            document.getElementById('printDate').textContent = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            document.getElementById('printRef').textContent = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('printDomicile').textContent = document.querySelector('input[name="domicile"]:checked').value === 'UP' ? 'Uttar Pradesh Resident' : 'Non-UP Resident';
+            document.getElementById('printCategory').textContent = elements.categorySelect.value;
+            document.getElementById('printCourse').textContent = elements.courseSelect.value;
+            document.getElementById('printMode').textContent = elements.admissionModeSelect.value;
+            document.getElementById('printMarks').textContent = document.getElementById('marks').value + '%';
+            document.getElementById('printIncome').textContent = '₹ ' + parseFloat(elements.incomeInput.value).toLocaleString('en-IN');
+
+            const statusBox = document.getElementById('printStatusBox');
+            const statusTitle = document.getElementById('printStatusTitle');
+            const statusSub = document.getElementById('printStatusSub');
+
+            if (evalResult.isEligible) {
+                statusBox.className = "text-center p-4 rounded-xl border-2 mb-6 bg-emerald-50 border-emerald-500 text-emerald-900";
+                statusTitle.textContent = "ELIGIBLE FOR SCHOLARSHIP";
+                statusSub.textContent = "Candidate meets all preliminary eligibility criteria for AY 2026-27.";
+            } else {
+                statusBox.className = "text-center p-4 rounded-xl border-2 mb-6 bg-rose-50 border-rose-500 text-rose-900";
+                statusTitle.textContent = "NOT ELIGIBLE FOR SCHOLARSHIP";
+                statusSub.textContent = "One or more criteria failed during automated assessment.";
+            }
+
+            const listElem = document.getElementById('printChecklistSummary');
+            listElem.innerHTML = `
+                <li>Domicile Verification: <strong>${evalResult.domicilePass ? 'PASSED' : 'FAILED'}</strong></li>
+                <li>Income Limit Verification: <strong>${evalResult.incomePass ? 'PASSED' : 'FAILED'}</strong> (Cap: ₹${(evalResult.maxIncome/100000).toFixed(1)} Lakhs)</li>
+                <li>Admission Mode Compliance: <strong>${evalResult.admissionPass ? 'PASSED' : 'FAILED'}</strong></li>
+                <li>Academic Qualification Marks: <strong>${evalResult.marksPass ? 'PASSED' : 'FAILED'}</strong></li>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            elements.langEnBtn.addEventListener('click', () => setLanguage('en'));
+            elements.langHiBtn.addEventListener('click', () => setLanguage('hi'));
+
+            elements.form.addEventListener('input', updateResultUI);
+            elements.form.addEventListener('change', updateResultUI);
+
+            elements.courseSelect.addEventListener('change', () => {
+                updateCourseFields();
+                updateResultUI();
+            });
+
+            elements.categorySelect.addEventListener('change', () => {
+                updateCategoryFields();
+                updateResultUI();
+            });
+
+            elements.incomeInput.addEventListener('input', updateIncomeDisplay);
+
+            elements.checkBtn.addEventListener('click', () => {
+                updateResultUI();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            elements.resetBtn.addEventListener('click', () => {
+                document.querySelector('input[name="domicile"][value="UP"]').checked = true;
+                elements.categorySelect.value = 'OBC';
+                updateCategoryFields();
+                elements.courseSelect.value = 'BTECH';
+                updateCourseFields();
+                elements.admissionModeSelect.value = 'ENTRANCE_COUNSELING';
+                document.getElementById('marks').value = '62';
+                elements.incomeInput.value = '180000';
+                updateIncomeDisplay();
+                updateResultUI();
+            });
+
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const presetKey = e.currentTarget.getAttribute('data-preset');
+                    applyPreset(presetKey);
+                });
+            });
+
+            document.querySelectorAll('.matrix-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    document.querySelectorAll('.matrix-tab').forEach(t => {
+                        t.className = "matrix-tab px-3 py-1.5 rounded-md transition text-slate-300 hover:text-white";
+                    });
+                    e.currentTarget.className = "matrix-tab px-3 py-1.5 rounded-md transition bg-amber-500 text-slate-950 font-bold";
+                    activeMatrixTab = e.currentTarget.getAttribute('data-tab');
+                    renderMatrixTable();
+                });
+            });
+
+            elements.matrixCourseFilter.addEventListener('change', renderMatrixTable);
+            elements.matrixSearch.addEventListener('input', renderMatrixTable);
+
+            elements.printReportBtn.addEventListener('click', () => {
+                window.print();
+            });
+
+            // Initial setup
+            updateCategoryFields();
+            updateCourseFields();
+            updateIncomeDisplay();
+            updateResultUI();
+            renderMatrixTable();
+        });
+    </script>
+</body>
+</html>

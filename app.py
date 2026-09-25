@@ -9,9 +9,12 @@ Flow:
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
+import os
 from backend import build_app, PROGRAMME_GROUPS, COLLEGE_INFO
 
 MIET_LOGO_URL = COLLEGE_INFO["logo_url"]
+SCHOLARSHIP_TOOL_PATH = os.path.join(os.path.dirname(__file__), "scholarship_tool.html")
 
 st.set_page_config(
     page_title=f"AI Admission Counselor | {COLLEGE_INFO['short_name']}",
@@ -458,6 +461,16 @@ def render_chat_page():
             st.rerun()
         st.markdown("---")
         st.caption("Ask about scholarships, admission, transport, required documents, fees, or hostel life.")
+
+        st.markdown("---")
+        with st.expander("🎓 Check Scholarship Eligibility"):
+            st.caption("UP State Scholarship Eligibility Checking Tool (2026-27)")
+            if os.path.exists(SCHOLARSHIP_TOOL_PATH):
+                with open(SCHOLARSHIP_TOOL_PATH, "r", encoding="utf-8") as f:
+                    scholarship_tool_html = f.read()
+                components.html(scholarship_tool_html, height=850, scrolling=True)
+            else:
+                st.warning("Scholarship tool file not found. Make sure 'scholarship_tool.html' is in the same folder as app.py.")
 
     with st.spinner("Setting things up..."):
         app = load_graph()

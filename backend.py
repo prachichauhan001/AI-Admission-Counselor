@@ -57,6 +57,46 @@ _IDENTITY_BLOCK = (
 )
 
 # ---------------------------------------------------------------------------
+# Official contact details — used whenever the bot doesn't have confirmed
+# data (e.g. exact placement stats, latest packages, rankings) so it points
+# the student to a real human/office instead of inventing numbers.
+# ---------------------------------------------------------------------------
+
+CONTACT_INFO = {
+    "phones": ["0121-2439019", "0121-2439057", "+91-9927439439"],
+    "regional_admission_office_phone": "+91 6399001515",
+    "emails": ["contact@miet.ac.in", "support@miet.ac.in"],
+}
+
+_CONTACT_BLOCK = (
+    "If the question asks for a specific number or statistic you don't have "
+    "confirmed data for (e.g. exact placement percentage, package figures, "
+    "rankings, exact dates), do NOT invent a number. Instead, tell the "
+    "student to confirm directly with the college using this contact info "
+    "(share it exactly as given):\n"
+    f"Contact Number: {', '.join(CONTACT_INFO['phones'])}\n"
+    f"Regional Admission Office: {COLLEGE_INFO['short_name']} Regional Admission "
+    f"Office - {CONTACT_INFO['regional_admission_office_phone']}\n"
+    f"Important Email Id: {', '.join(CONTACT_INFO['emails'])}\n\n"
+)
+
+# ---------------------------------------------------------------------------
+# Scholarship eligibility tool — a separate interactive UP State Scholarship
+# Eligibility Checking Tool (2026-27) embedded inside this same app (see the
+# "🎓 Check Scholarship Eligibility" section in the sidebar / app.py).
+# ---------------------------------------------------------------------------
+
+_SCHOLARSHIP_TOOL_NOTE = (
+    "This app also has a built-in 'UP State Scholarship Eligibility Checking "
+    "Tool (2026-27)' — the student can find it under '🎓 Check Scholarship "
+    "Eligibility' in the sidebar of this app. It instantly checks eligibility "
+    "based on domicile, category (General/SC/ST/OBC/Minority), course, "
+    "admission mode, marks and family income. When answering a scholarship "
+    "question, briefly point the student to this tool for a personalized "
+    "instant result, in addition to the general info from the documents.\n\n"
+)
+
+# ---------------------------------------------------------------------------
 # Programme groups (used by the Streamlit selection screen)
 # ---------------------------------------------------------------------------
 
@@ -318,21 +358,22 @@ def _response_node(state: State) -> dict:
     programme = state.get("programme", "Unknown")
     context = state["retrieved_context"]
 
+    query_type = state.get("query_type", "")
+
     if context == "NO_RETRIEVAL_NEEDED":
         prompt = (
             _IDENTITY_BLOCK
+            + _CONTACT_BLOCK
             + f"You are talking to a {programme} student. Answer the question below "
               f"in 3-5 short sentences, friendly and precise.\n\n"
-              f"If the question asks for a specific number or statistic you don't have "
-              f"confirmed data for (e.g. exact placement percentage, package figures, "
-              f"rankings, exact dates), do NOT invent a number — say this isn't "
-              f"confirmed and suggest checking the official MIET website or contacting "
-              f"the admissions/placement office for the latest figures.\n\n"
               f"Question: {query}"
         )
     else:
+        extra_note = _SCHOLARSHIP_TOOL_NOTE if query_type == "scholarship" else ""
         prompt = (
             _IDENTITY_BLOCK
+            + _CONTACT_BLOCK
+            + extra_note
             + f"You are helping a {programme} student. Use ONLY the context below, "
               f"taken from official college documents.\n\n"
               f"IMPORTANT: this context may contain information about OTHER programmes "
